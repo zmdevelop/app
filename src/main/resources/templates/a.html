@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+</head>
+<body>
+	<input th:value="${1+3}"></input>
+	<form action="" method="post">
+		<input type="text" name="name" value="${dto.name}" /> <br />
+		<fmt:formatDate value="${dto.birth}" type="date" pattern="yyyy-MM-dd"
+			var="theFormattedDate" />
+		<input type="text" name="birth" id="birthInput2"
+			value="${theFormattedDate}" /> <br /> <input type="submit"
+			value="Submit" />
+	</form>
+</body>
+</html>

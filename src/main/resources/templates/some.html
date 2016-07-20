@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="_csrf_parameter" th:content="${_csrf.parameterName}" th:if="${_csrf}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}" th:if="${_csrf}"/>
+<meta name="_csrf" th:content="${_csrf.token}" th:if="${_csrf}"/>
+<script type="text/javascript" language="javascript">
+var csrfParameter = $("meta[name='_csrf_parameter']").attr("content");
+var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+var csrfToken = $("meta[name='_csrf']").attr("content");
+</script>
+</head>
+    <body>
+        <p th:text="${dt}">Date Time</p>
+        <p th:text="${d}">Date</p>
+        <form action="" method="POST">
+         <input name="mydt" value="20130504"></input>
+         <input type="hidden"
+					th:name="${_csrf.parameterName}" th:value="${_csrf.token}" th:if="${_csrf}"/>
+         <input type="submit" value="Submit" />
+         
+        </form>
+        <div sec:authentication="name">
+        The value of the "name" property of the authentication object should appear here.
+    </div>
+    </body>
+</html>
