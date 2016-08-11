@@ -16,12 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @Controller
 public class HomeController {
 	private static final Logger log = LoggerFactory
 			.getLogger(HomeController.class);
-	
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(HttpSession sc) {
 		log.info(" {} ", sc.getServletContext().getRealPath("/"));
@@ -29,19 +28,24 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/login")
-	public String loginPage(HttpServletRequest request, HttpServletResponse response) {
+	public String loginPage(HttpServletRequest request,
+			HttpServletResponse response) {
 		response.setHeader("X-Frame-Options", "SAMEORIGIN");
 		return "login";
 	}
 
-
 	// 20140603165000
-	// @RequestParam(value="mydt") @DateTimeFormat(pattern = "yyyyMMdd") DateTime 
-	@RequestMapping(value = "/some",  method = RequestMethod.POST)
-	public String somePost(Model model,  @RequestParam(value="mydt") @DateTimeFormat(pattern = "yyyyMMdd") LocalDateTime mydt) {
-		System.out.println("***************************************************");
+	// @RequestParam(value="mydt") @DateTimeFormat(pattern = "yyyyMMdd")
+	// DateTime
+	@RequestMapping(value = "/some", method = RequestMethod.POST)
+	public String somePost(
+			Model model,
+			@RequestParam(value = "mydt") @DateTimeFormat(pattern = "yyyyMMdd") LocalDateTime mydt) {
+		System.out
+				.println("***************************************************");
 		System.out.println(mydt);
-		System.out.println("***************************************************");
+		System.out
+				.println("***************************************************");
 		model.addAttribute("dt", LocalDateTime.now());
 		model.addAttribute("d", new Date());
 		return "some";
