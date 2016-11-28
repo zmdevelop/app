@@ -47,9 +47,12 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -61,6 +64,7 @@ import cn.com.taiji.security.TaijiSecurityMetadataSource;
 import cn.com.taiji.security.TaijiSuccessHandler;
 import cn.com.taiji.security.TaijiUserDetailServiceImpl;
 import cn.com.taiji.security.TaijiUsernamePasswordAuthenticationFilter;
+import cn.com.taiji.sys.interceptor.DMGridDataFormatInterceptor;
 import cn.com.taiji.sys.json.SysModule;
 import cn.com.taiji.sys.service.MenuService;
 import cn.com.taiji.sys.service.RoleService;
@@ -182,6 +186,8 @@ public class Application extends WebMvcConfigurerAdapter {
 
 	@Autowired
 	ThymeleafViewResolver thymeleafViewResolver;
+	@Autowired
+	FreeMarkerViewResolver freeMarkerViewResolver;
 	
 	/*添加multipart配置 2014-11-13 SunJingyan Start*/
 	@Autowired
@@ -210,12 +216,29 @@ public class Application extends WebMvcConfigurerAdapter {
 				.mediaType("json", MediaType.APPLICATION_JSON)
 				.mediaType("jsonp", MediaType.valueOf("application/javascript"));
 	}
-
+	/*@Autowired
+	InternalResourceViewResolver jspViewResolver;*/
+//	@Autowired  
+//    protected freemarker.template.Configuration configuration; 
 	@Bean
 	public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) 
 	{
+//		configuration.setDateFormat("yyyy/MM/dd");  
+//        configuration.setDateTimeFormat("yyyy-MM-dd HH:mm:ss");  
 		List<ViewResolver> resolvers = new ArrayList<ViewResolver>();
-
+		//jspViewResolver.setPrefix("classpath:/templates/jsp/");
+		//jspViewResolver.setSuffix(".jsp");
+		//jspViewResolver.setOrder(0);
+		//resolvers.add(jspViewResolver);
+		freeMarkerViewResolver.setOrder(1);
+//		freeMarkerViewResolver.setExposeRequestAttributes(true);
+//		freeMarkerViewResolver.setExposeSessionAttributes(true);
+//		freeMarkerViewResolver.setExposeSpringMacroHelpers(true);
+//		freeMarkerViewResolver.setCache(false);  
+//		freeMarkerViewResolver.setPrefix("classpath:/templates/ftl/");
+//		freeMarkerViewResolver.setSuffix(".ftl");
+		resolvers.add(freeMarkerViewResolver);
+		thymeleafViewResolver.setCache(false);
 		resolvers.add(thymeleafViewResolver);
 		ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
 		resolver.setViewResolvers(resolvers);
@@ -271,7 +294,14 @@ public class Application extends WebMvcConfigurerAdapter {
 
 		}
 	}
-
+	/**
+     * 配置拦截器
+     * @author lance
+     * @param registry
+     */
+//    public void addInterceptors(InterceptorRegistry registry) {
+//    	registry.addInterceptor(new DMGridDataFormatInterceptor()).addPathPatterns("/**");
+//    }
 	@Order(Ordered.LOWEST_PRECEDENCE - 8)
 	protected static class ApplicationSecurity extends
 	WebSecurityConfigurerAdapter {
